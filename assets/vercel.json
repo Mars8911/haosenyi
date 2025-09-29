@@ -2,19 +2,18 @@
   "version": 2,
   "trailingSlash": false,
 
+  "routes": [
+    { "handle": "filesystem" },
+
+    { "src": "^/$", "dest": "/index.html" },
+    { "src": "^/index$", "dest": "/index.html" },
+
+    { "src": "^/([A-Za-z0-9_\\-\\/]+)$", "dest": "/$1.html" }
+  ],
+
   "redirects": [
     { "source": "/:path+.html", "destination": "/:path+", "permanent": true }
   ],
-
-
-  "rewrites": [
-    { "source": "/", "destination": "/index.html" },
-    {
-      "source": "/:path((?!.*\\.(?:css|js|png|jpg|jpeg|gif|svg|webp|ico|woff2?|map)).+)",
-      "destination": "/:path.html"
-    }
-  ],
-
 
   "headers": [
     {
