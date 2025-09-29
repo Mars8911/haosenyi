@@ -1,0 +1,169 @@
+version: 1
+project:
+  name: haosenyi-static-site
+  description: "靜態網站專案，使用 HTML + SCSS + JS，僅允許在指定區域修改。"
+
+tech_stack:
+  html: vanilla
+  css: compiled-from-scss
+  scss:
+    root: assets/scss
+    entry: assets/scss/main.scss
+    partials_dir: assets/scss
+    compile_to: assets/css/style.css
+  js:
+    root: assets/js
+    entry: assets/js/main.js
+  assets:
+    img_dir: assets/img
+    fonts_dir: assets/fonts
+
+conventions:
+  css_naming: BEM
+  class_prefix: hs-     # 所有新 class 請加 hs- 前綴
+  ids_are_immutable: true   # 不可修改/刪除現有的 id
+  do_not_change_existing_class_names: true  # 不可更改現有 class
+  do_not_inline_styles: true   # 禁止 inline style
+
+edit_safety:
+  default_edit_scope: file
+  allow_multi_file_edits_only_when_files_are_listed: true
+  never_touch:   # 以下目錄禁止修改
+    - assets/img/**
+    - assets/fonts/**
+    - settings.json
+  allow_touch_globs:   # 允許修改的檔案類型
+    - "*.html"
+    - "assets/scss/**/*.scss"
+    - "assets/js/**/*.js"
+    - "assets/css/style.css"
+
+html_rules:
+  editable_markers:   # HTML 編輯必須加上標記區塊
+    start: "<!-- CURSOR:BEGIN editable:"
+    end: "<!-- CURSOR:END editable -->"
+  restrict_to_marked_blocks_by_default: true
+  dont_rename_or_remove:
+    - "id"      # 不可修改既有 id
+    - "data-*"  # 不可刪改 data-* 屬性
+  allowed_html_changes:
+    - "新增 class，需以 hs- 開頭"
+    - "新增 data-* 屬性"
+    - "只允許在 editable block 中插入新節點"
+
+scss_rules:
+  file_structure:   # 按照目前專案實際結構
+    - "assets/scss/main.scss"
+    - "assets/scss/_variables.scss"
+    - "assets/scss/_mixins.scss"
+    - "assets/scss/_typography.scss"
+    - "assets/scss/_helper.scss"
+    - "assets/scss/_buttons.scss"
+    - "assets/scss/_animation.scss"
+    - "assets/scss/_topbar.scss"
+    - "assets/scss/_header.scss"
+    - "assets/scss/_hero.scss"
+    - "assets/scss/_about.scss"
+    - "assets/scss/_service.scss"
+    - "assets/scss/_whyChoose.scss"
+    - "assets/scss/_process.scss"
+    - "assets/scss/_funfact.scss"
+    - "assets/scss/_caseStudy.scss"
+    - "assets/scss/_gallery.scss"
+    - "assets/scss/_testimonial.scss"
+    - "assets/scss/_team.scss"
+    - "assets/scss/_cta.scss"
+    - "assets/scss/_faq.scss"
+    - "assets/scss/_pricing.scss"
+    - "assets/scss/_blog.scss"
+    - "assets/scss/_news-addons.scss"
+    - "assets/scss/_video.scss"
+    - "assets/scss/_contact.scss"
+    - "assets/scss/_footer.scss"
+    - "assets/scss/_section.scss"
+    - "assets/scss/_marquee.scss"
+    - "assets/scss/_meanmenu.scss"
+    - "assets/scss/_preloader.scss"
+  import_order:   # 建議順序
+    - "_variables"
+    - "_mixins"
+    - "_typography"
+    - "_helper"
+    - "_buttons"
+    - "_animation"
+    - "_topbar"
+    - "_header"
+    - "_hero"
+    - "_about"
+    - "_service"
+    - "_whyChoose"
+    - "_process"
+    - "_funfact"
+    - "_caseStudy"
+    - "_gallery"
+    - "_testimonial"
+    - "_team"
+    - "_cta"
+    - "_faq"
+    - "_pricing"
+    - "_blog"
+    - "_news-addons"
+    - "_video"
+    - "_contact"
+    - "_footer"
+    - "_section"
+    - "_marquee"
+    - "_meanmenu"
+    - "_preloader"
+
+  constraints:
+    - "不直接硬寫顏色，必須使用 _variables.scss 的變數"
+    - "命名遵循 BEM + hs- 前綴"
+    - "禁止 !important，除非特別要求"
+    - "Selector 最多 3 層"
+    - "全域 reset 限制在 base/_reset.scss"
+
+js_rules:
+  namespace: "window.HS"   # 統一掛載在 window.HS 下
+  module_pattern: iife
+  constraints:
+    - "僅能使用 Vanilla JS，不可引入框架"
+    - "不汙染全域變數，僅能掛在 window.HS"
+    - "用 [data-*] 或 .hs-* 做 query，避免依賴 ID"
+    - "功能模組放在 assets/js/modules/*.js，並由 main.js 匯入"
+    - "不可破壞既有事件監聽或選擇器"
+  file_structure:
+    - "assets/js/main.js"
+    - "assets/js/utils/dom.js"
+    - "assets/js/modules/*"
+
+when_generating_components:
+  scss_target_dir: "assets/scss/components"
+  js_target_dir: "assets/js/modules"
+  html_insertion_policy:
+    - "只能在 editable markers 內插入"
+    - "若頁面沒有標記，需先加標記或明確授權全頁修改"
+
+diff_and_docs:
+  require_change_summary: true
+  change_summary_format: |
+    # 修改摘要
+    - 修改檔案：
+    - 修改內容：
+    - 為什麼安全（不影響其他頁面）：
+
+quality:
+  linting:
+    css: "若有 stylelint，則需通過；否則保持良好格式"
+    js: "必須使用 const/let；嚴格等號 ===；函式需小而純粹"
+  performance:
+    - "能用 CSS 動畫就不用 JS"
+    - "非必要 JS 加上 defer 屬性"
+
+guardrails:
+  examples_of_allowed_requests:
+    - "只修改 index.html 的 hero 區域，並新增 _hero.scss 與 hero.js"
+  examples_of_forbidden_actions:
+    - "全站改 class/id 名稱"
+    - "未經允許修改 layout/shared 部分"
+    - "刪除或移動未列出的檔案"
