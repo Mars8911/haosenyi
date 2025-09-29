@@ -1,7 +1,14 @@
+
 {
   "version": 2,
+  "trailingSlash": false,
   "cleanUrls": true,
   "rewrites": [
-    { "source": "/index", "destination": "/index.html" }
+    { "source": "/", "destination": "/index.html" },
+    { "source": "/web-dev", "destination": "/web-dev.html" },
+    { "source": "/app-dev", "destination": "/app-dev.html" },
+    { "source": "/ai-dev", "destination": "/ai-dev.html" },
+    { "source": "/services", "destination": "/services.html" },
+    { "source": "/contact", "destination": "/contact.html" }
   ]
 }
