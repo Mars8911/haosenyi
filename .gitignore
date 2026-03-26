@@ -3,3 +3,6 @@ node_modules/
 dist/
 build/
 .env
+n8n-settings.json
+package-lock.json
+package.json
